@@ -52,7 +52,7 @@ namespace articleservice
                 }
             }
 
-            return (ActionResult)new JsonResult(JsonConvert.SerializeObject(result));
+            return (ActionResult)new JsonResult(result);
         }
 
         private static BlobClient GetBlobClient(string id, string connectionString)
