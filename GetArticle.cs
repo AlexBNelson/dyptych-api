@@ -30,9 +30,11 @@ namespace articleservice
                 .AddEnvironmentVariables()
                 .Build();
 
-            var blobConnectionString = config.GetConnectionString("BlobConnectionString");
+            var blobConnectionString = config.GetConnectionString("ArticleConnectionString");
 
-            BlobClient client = GetBlobClient(id, blobConnectionString);
+            var blobName = "articles";
+
+            BlobClient client = GetBlobClient(id, blobConnectionString, blobName);
 
             BlobDownloadInfo download = await client.DownloadAsync();
 
@@ -55,11 +57,49 @@ namespace articleservice
             return (ActionResult)new JsonResult(result);
         }
 
-        private static BlobClient GetBlobClient(string id, string connectionString)
+        [FunctionName("GetThumbnail")]
+        public static async Task<IActionResult> GetThumbnail(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "thumbnail/{id}")] HttpRequest req,
+            ILogger log, ExecutionContext context, string id)
         {
+            log.LogInformation("C# HTTP trigger function processed a request.");
 
-            var blobName = "articles";
+            var config = new ConfigurationBuilder()
+                .SetBasePath(context.FunctionAppDirectory)
+                .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
 
+            var blobConnectionString = config.GetConnectionString("ThumbnailConnectionString");
+
+            var blobName = "articleThumbnails";
+
+            BlobClient client = GetBlobClient(id, blobConnectionString, blobName);
+
+            BlobDownloadInfo download = await client.DownloadAsync();
+
+            MemoryStream stream = new MemoryStream();
+
+            stream.Position = 0;//resetting stream's position to 0
+
+            var serializer = new JsonSerializer();
+
+            Thumbnail result;
+
+            using (var sr = new StreamReader(download.Content))
+            {
+                using (var jsonTextReader = new JsonTextReader(sr))
+                {
+                   result = serializer.Deserialize<Thumbnail>(jsonTextReader);
+                }
+            }
+
+            return (ActionResult)new JsonResult(result);
+        }
+
+
+        private static BlobClient GetBlobClient(string id, string connectionString, string blobName)
+        {
             BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
 
             var blobContainerClient = blobServiceClient.GetBlobContainerClient(blobName);
