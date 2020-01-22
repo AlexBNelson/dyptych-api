@@ -72,7 +72,7 @@ namespace articleservice
 
             var blobConnectionString = config.GetConnectionString("ThumbnailConnectionString");
 
-            var blobName = "articleThumbnails";
+            var blobName = "articlethumbnails";
 
             BlobClient client = GetBlobClient(id, blobConnectionString, blobName);
 
