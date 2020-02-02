@@ -8,7 +8,8 @@ namespace articleservice
             None,
             Italic,
             Bold,
-            Link
+            Link,
+            Quote
         }
         public Styles style;
         public string text;
