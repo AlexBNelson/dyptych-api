@@ -9,5 +9,6 @@ namespace articleservice
         public string Author;
         public List<Paragraph> Body;
         public string ImageUrl;
+        public string ImageLabel;
     }
 }
