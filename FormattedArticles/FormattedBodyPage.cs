@@ -12,5 +12,7 @@ namespace articleservice
         public string Museum;
         public List<Paragraph> Body;
         public string ImageUrl;
+        public string ImageCredit;
+        public string ImageLocation;
     }
 }
