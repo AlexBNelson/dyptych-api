@@ -39,4 +39,4 @@ jobs:
           app-name: 'dyptych-api'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B324BB554487498CB4ACC00127B50356 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEE3B035FBE6433A9DE970ABB62C4143 }}
