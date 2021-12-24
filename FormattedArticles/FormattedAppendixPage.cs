@@ -4,5 +4,6 @@ namespace articleservice
     {
         public string Sources;
         public string ImageUrl;
+        public string[] RelatedArticles;
     }
 }
